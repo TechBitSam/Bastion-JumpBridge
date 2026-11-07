@@ -2,6 +2,10 @@
 
 **Your Windows workspace for Azure Bastion, virtual machines, and remote connections.**
 
+> [!NOTE]
+>I originally designed this compact utility/tool to help with my day-to-day management of VMs in Azure, and I thought others could benefit from it too. The application aims to simplify accessing and managing VMs. There is some uniqueness to the application that may trigger a false positive on antivirus software, mainly the ability to send scripts to the VM, so you may have to work around some known annoyances (sorry!).
+
+
 Bastion JumpBridge v2.1 brings Windows RDP and Linux SSH connections together with Azure inventory, VM diagnostics, credential management, reusable scripts, and session tracking in a redesigned desktop interface. Built for Azure administrators, CloudOps teams, and support engineers who move between subscriptions and virtual machines throughout the day.
 
 ![Platform](https://img.shields.io/badge/platform-Windows_x64-blue.svg)
