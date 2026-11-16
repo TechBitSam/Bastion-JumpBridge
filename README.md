@@ -1,19 +1,26 @@
-# Bastion JumpBridge v2.2
+# Bastion JumpBridge v2.3
 
 **Your Windows workspace for Azure Bastion, virtual machines, and remote connections.**
 
 > [!NOTE]
->I originally designed this compact utility/tool to help with my day-to-day management of VMs in Azure, and I thought others could benefit from it too. The application aims to simplify accessing and managing VMs. There is some uniqueness to the application that may trigger a false positive on antivirus software, mainly the ability to send scripts to the VM, so you may have to work around some known annoyances (sorry!).
+> I originally built JumpBridge for my day-to-day Azure VM management and thought others could benefit from it too. Some features, particularly sending scripts to VMs, may trigger antivirus false positives (sorry for the inconvenience!).
 
+Bastion JumpBridge v2.3 brings Windows RDP, Linux SSH, and everyday Azure VM administration together in one desktop workspace for Azure administrators, CloudOps teams, and support engineers.
 
-Bastion JumpBridge v2.2 brings Windows RDP and Linux SSH connections together with Azure inventory, VM diagnostics, credential management, reusable scripts, resource monitoring, Linux file transfers, and session tracking in a redesigned desktop interface. Built for Azure administrators, CloudOps teams, and support engineers who move between subscriptions and virtual machines throughout the day.
+### Your Azure Inventory, Without the Manual Setup
+
+JumpBridge takes the heavy lifting out of remote connection management by discovering your live VM inventory directly from Azure. Select your subscription and Bastion to work with the resources available to your signed-in identity, without manually building and maintaining a catalog of connection entries.
+
+Your organization stays in control through Azure role-based access control (RBAC). Live discovery and Azure operations use your existing permissions for resources such as Bastions, virtual machines, and Key Vaults. JumpBridge does not grant additional access: viewing a resource does not automatically authorize connecting to it, changing it, or reading its secrets.
+
+This approach supports centrally managed access and least-privilege practices that can contribute to an organization's SOC 2 control requirements. Using JumpBridge does not, by itself, establish SOC 2 compliance.
 
 ![Platform](https://img.shields.io/badge/platform-Windows_x64-blue.svg)
 ![Framework](https://img.shields.io/badge/.NET_Framework-4.7.2-blueviolet.svg)
 ![Azure](https://img.shields.io/badge/Azure-Bastion-informational.svg)
 ![Connections](https://img.shields.io/badge/connections-RDP_%2B_SSH-5391FE.svg)
 
-> This repository distributes compiled releases of JumpBridge. It does not contain the application source code. The features below describe version 2.2.17; older releases may differ.
+> This repository distributes compiled releases of JumpBridge. It does not contain the application source code. The features below describe version 2.3.7; older releases may differ.
 
 ## Download
 
@@ -21,21 +28,21 @@ Bastion JumpBridge v2.2 brings Windows RDP and Linux SSH connections together wi
 
 Download the release package, extract it to a folder on your PC, and run **Bastion JumpBridge.exe**. Keep any accompanying files and folders together. No application installer is required, but the prerequisites below must be available.
 
-## What's New in 2.2.17
+## What's New in 2.3.7
 
-- **VM Resource Monitoring:** Dashboard charts for CPU, memory where available, disk activity, and network traffic across the selected subscription, with 1-, 4-, and 24-hour views.
-- **Linux File Transfer:** Browse local and remote folders side by side, upload/download files and folders, edit text files, and create archives through a dedicated Bastion connection.
-- **Special Tags:** Choose Azure tag fields to display in the VM list and arrange them in your preferred order.
-- **More Flexible Scripts:** Enable both execution modes for a saved script and choose at launch. Run Bash scripts in a new terminal or an existing idle SSH terminal.
-- **Smoother VM Management:** Run power actions on different VMs concurrently, see script and file-transfer status, and use clearer credential indicators and improved filtering.
+- **Session Dock:** Keep active RDP and SSH sessions in one compact dock, with quick window switching, session details, and a collapsible icon rail.
+- **RDP Capture:** Save PNG screenshots or record GIF and MP4 clips directly from a connected RDP session.
+- **More Reliable Script Delivery:** Verify the remote Start menu before typing, track delivery progress, and stop when the target window or visual state cannot be confirmed.
+- **Faster Script Management:** Assign or clear scripts across the visible VM selection and copy script content to the clipboard.
+- **Smoother Everyday Use:** Continue working during automatic inventory refresh, with improved window activation, theme colors, icons, and rendering.
 
 ## Features
 
-### A Redesigned Workspace
+### Workspace and Customization
 
-Dedicated pages for **Dashboard**, **Bastions**, **Virtual Machines**, **Credential Manager**, **Script Library**, **Activity Log**, **Settings**, and **About** keep everyday tasks within reach. The dashboard summarizes your selected workspace and inventory, with charts and shortcuts to common tasks.
+Navigate between **Dashboard**, **Bastions**, **Virtual Machines**, **Credential Manager**, **Script Library**, **Activity Log**, **Settings**, and **About**. The dashboard provides inventory summaries and shortcuts to common tasks.
 
-Choose a theme preset or customize the application's colors with a live preview. Save your preferences and return to your remembered window position and selected Bastion on the next launch. Resize the VM list and details panels using the divider; JumpBridge remembers the split and preserves VM selection and scroll position when reloading the page.
+Choose a theme preset, including the new Silver and Pearl options, or customize application and icon colors with a live preview. Save your preferences and return to your remembered window position and selected Bastion on the next launch. Resize the VM list and details panels using the divider; JumpBridge remembers the split and preserves VM selection and scroll position when reloading the page.
 
 ### VM Resource Monitoring
 
@@ -47,13 +54,13 @@ Monitoring summarizes reporting VMs across the subscription. It requires Azure m
 
 - Load saved Azure PowerShell contexts and switch between available subscriptions for the loaded account, including contexts in different tenants.
 - Refresh the saved context or validate sign-in from the Azure menu.
-- Discover Bastion hosts and inspect their SKU, network configuration, native client setting, resource IDs, and tags.
+- Inspect Bastion SKU, network configuration, native client setting, resource IDs, and tags.
 - Browse Windows and Linux VMs with filters for name or resource group, power state, and operating system.
 - Configure **Special Tags** in Settings to show selected Azure tag values directly in the VM list, and reorder the fields to suit your workflow.
 - Restore saved Bastion and VM inventories across restarts, with indicators showing cached data and refresh times.
-- Choose automatic inventory refresh on context selection and at a configurable interval, or refresh manually when needed. The default interval is **10 minutes**, adjustable from **1 to 1,440 minutes** in Settings.
+- Choose automatic inventory refresh on context selection and at a configurable interval, or refresh manually when needed. The default interval is **10 minutes**, adjustable from **1 to 1,440 minutes** in Settings. Automatic refresh runs in the background so you can continue working; user actions take priority.
 
-Inventory visibility does not guarantee that a VM is reachable through the selected Bastion. Connections still depend on your Azure permissions and network configuration.
+Saved inventory can reflect earlier access and resource state. Refresh to retrieve current data; connecting also requires a valid network path from the selected Bastion to the VM.
 
 ### Windows RDP and Linux SSH
 
@@ -101,7 +108,8 @@ Completed transfers remain after cancellation. Interrupted transfers may leave a
 Keep common administration tasks in **Script Library** instead of repeatedly finding and copying script files.
 
 - Create and edit **PowerShell**, **Bash**, and **Batch** scripts with syntax highlighting, formatting, and familiar editing shortcuts.
-- Assign saved scripts to compatible VMs for quick access from the VM details panel.
+- Assign saved scripts to compatible VMs for quick access from the VM details panel. Bulk selection applies to the visible VM list, making filtered assignments easier.
+- Copy the current script content to the clipboard for use elsewhere.
 - Import `.ps1`, `.sh`, `.bat`, or `.cmd` files. Choose **Replace Content** to retain a selected script's settings and VM assignments, or **Import As New** to create a separate, unassigned script.
 - Export your saved scripts and assignments as a JSON catalog, then import them into another JumpBridge library. Matching script IDs are updated; unrelated scripts are retained.
 
@@ -116,13 +124,26 @@ Choose **Save Script** to keep your edits and assignments. Importing a script or
 
 For Bash scripts, choose a new terminal or **Existing Terminal**. Existing-terminal execution uses its current directory and exported environment; start from an idle, empty command line and leave keyboard and mouse input alone during delivery.
 
-Interactive RDP delivery checks remote readiness and script receipt; receipt does not confirm successful completion. Non-interactive execution requires a working VM agent and Azure Run Command permissions. Scripts in this mode cannot prompt for input, and returned output is limited to the last 4 KB. VM scale set script execution is not supported. **Stop Waiting** stops local monitoring; it does not cancel an accepted Azure execution.
+Interactive RDP delivery visually verifies a supported remote Start menu before typing, checks clipboard readiness and receipt, and reports delivery stages. It supports windowed and full-screen sessions without installing a helper on the VM. Keep the target RDP window focused during delivery. Unsupported or unclear layouts stop delivery rather than allowing unverified typing; not every Windows layout or language is supported. Receipt confirms delivery, not successful script completion. Non-interactive execution requires a working VM agent and Azure Run Command permissions. Scripts in this mode cannot prompt for input, and returned output is limited to the last 4 KB. VM scale set script execution is not supported. **Stop Waiting** stops local monitoring; it does not cancel an accepted Azure execution.
 
-### Session Widgets
+### Session Dock and Widgets
 
-Floating widgets keep VM and session details close at hand while you work in RDP or SSH. See the VM, subscription, Bastion, private IP, tags, and other context, then double-click a widget to return to its session window.
+Choose **Session Dock Mode** in Settings to bring active RDP and SSH sessions into one panel. Double-click a session to return to its window, use the information icon for details, and collapse the dock to an icon rail when space is limited. Pin it expanded or let it collapse when idle; its position and display state are remembered.
 
-Choose whether widgets appear always, only when JumpBridge is minimized, or remain off.
+Prefer separate floating windows? Choose **Widget Mode** to show VM, subscription, Bastion, private IP, tags, and session context beside your work. Both modes follow the visibility preference: always, only when JumpBridge is minimized, or off.
+
+### RDP Screenshots and Recordings
+
+Right-click a connected Windows VM and choose **Capture > Screenshot** or **Capture > Record**. Capture is also available from an RDP widget. If a VM has multiple RDP windows, choose the one to capture.
+
+- Save screenshots as **PNG**, or record video-only clips as **GIF** or **MP4**.
+- Choose recording presets from **5 seconds to 5 minutes**, stop early to save a shorter clip, or cancel to discard it.
+- See capture and saving progress, then open the saved file or its folder. Completed recordings show duration and file size.
+- Capture the selected remote desktop window rather than the surrounding local desktop. Saved images and recordings include a subtle JumpBridge watermark.
+
+Capture restores and focuses the selected RDP window. Keep it focused and at the same size; switching to another application, resizing, or closing the target aborts capture. The recorder's Stop and Cancel controls remain usable.
+
+Screenshots and recordings are saved locally under **Capture/Screenshots** and **Capture/Recordings** beside the application by default. An alternative destination can be selected when needed. Capture requires Windows 10 version 1903 or later; MP4 also requires Windows Media Foundation and H.264 support. No capture software is installed on the VM.
 
 ### Searchable Activity History
 
@@ -148,9 +169,10 @@ In-app installation depends on a published signed update feed. If update informa
 | VM Monitoring | Azure permissions to read VM inventory and metrics; metric availability depends on the VM |
 | Key Vault Imports | `Az.KeyVault` and permission to list/read the required vault secrets |
 | Interactive Scripts | A connected RDP or SSH session; RDP delivery also requires clipboard redirection |
+| RDP Capture | Windows 10 version 1903 or later; MP4 requires Media Foundation and H.264 support |
 | Non-Interactive Scripts | A standalone Azure VM with a working VM agent and Azure Run Command permissions |
 
-JumpBridge reports missing prerequisites; it does not automatically install PowerShell modules or Windows features. The v2 discovery workflow uses `Az.Accounts`; `Az.Compute` and `Az.Network` are not required for inventory discovery.
+JumpBridge reports missing prerequisites but does not install them automatically. Inventory discovery does not require `Az.Compute` or `Az.Network`.
 
 ## Getting Started
 
@@ -171,7 +193,7 @@ JumpBridge reports missing prerequisites; it does not automatically install Powe
 7. **Save reusable scripts.** Open **Script Library**, create or import a script, choose its execution mode, assign compatible VMs, and select **Save Script**. Run assigned scripts from the VM details panel when needed.
 8. **Manage Linux files.** Right-click a running Linux VM and choose **File Transfer** to browse, transfer, or edit files using its assigned SSH key.
 9. **Review monitoring.** Open **Dashboard** after validating Azure access to inspect resource activity and choose a time range.
-10. **Make it yours.** Use **Settings** to choose the refresh interval, widget visibility, theme presets or custom colors, Special Tags and their display order, and whether power actions are available.
+10. **Make it yours.** Use **Settings** to choose the refresh interval, session dock or widgets, visibility, theme presets or custom colors, Special Tags and their display order, and whether power actions are available.
 
 ## Local Data and Credential Storage
 
@@ -181,6 +203,7 @@ JumpBridge uses your Azure PowerShell sign-in; you do not enter your Azure accou
 - **Imported SSH private keys** are encrypted with Windows DPAPI for the current Windows user and stored in the local application database. OpenSSH sessions use temporary private-key files with restricted access, which JumpBridge cleans up after use.
 - **Inventory, activity history, dashboard and monitoring snapshots, and the script library** are stored locally, normally in `%LOCALAPPDATA%\BastionJumpBridge\cache.db`. If that location cannot be initialized because of a storage-access problem, the app may use a database beside the EXE. Saved inventory and activity can contain resource names, IDs, and operational details.
 - **Saved scripts and exported catalogs** contain script content and VM assignments. Script content is not encrypted by the library; avoid embedding passwords, tokens, or private keys, and review catalogs before sharing them.
+- **Screenshots and recordings** are saved locally and contain the remote desktop content you capture. Review them before sharing.
 - **Application preferences** are saved locally in the Windows registry. History remains available across restarts and has no automatic expiration.
 
 ## Support and Feedback
